@@ -94,7 +94,7 @@ public class PlayFabLogin : MonoBehaviour
                 }
             }
         };
-        PlayFabClientAPI.LoginWithEmailAddress(request, OnLoginSuccess, OnLoginFailure);
+        PlayFabClientAPI.LoginWithEmailAddress(request, OnLoginSuccess, OnError);
     }
 
     void OnRegisterSuccess(RegisterPlayFabUserResult obj)
@@ -104,6 +104,7 @@ public class PlayFabLogin : MonoBehaviour
         userPanel.SetActive(true);
         txtUserName.text = obj.Username;
 
+        PlayFabClientAPI.UpdateUserTitleDisplayName(new UpdateUserTitleDisplayNameRequest { DisplayName = userName.text }, result=> { }, OnError);
         Debug.Log("Congratulations, you registered!");
     }
     void OnAddLoginSuccess(AddUsernamePasswordResult obj)
@@ -141,7 +142,7 @@ public class PlayFabLogin : MonoBehaviour
         Debug.Log("Congratulations, you made your first successful API call!");
     }
 
-    void OnLoginFailure(PlayFabError error)
+    void OnError(PlayFabError error)
     {
         Debug.LogError(error.GenerateErrorReport());
     }
