@@ -6,6 +6,11 @@ using UnityEngine.UI;
 
 public class PlayFabLogin : MonoBehaviour
 {
+    public static PlayFabLogin ins;
+    public string playfabID;
+    public string entityId;
+    public string entityType;
+
     [SerializeField] InputField userName;
     [SerializeField] InputField userEmail;
     [SerializeField] InputField userPassword;
@@ -18,6 +23,7 @@ public class PlayFabLogin : MonoBehaviour
 
     private void Start()
     {
+        ins = this;
         if (PlayerPrefs.HasKey("Email"))
         {
             email = PlayerPrefs.GetString("Email");
@@ -103,6 +109,7 @@ public class PlayFabLogin : MonoBehaviour
         authPanel.SetActive(false);
         userPanel.SetActive(true);
         txtUserName.text = obj.Username;
+        playfabID = obj.PlayFabId;
 
         PlayFabClientAPI.UpdateUserTitleDisplayName(new UpdateUserTitleDisplayNameRequest { DisplayName = userName.text }, result=> { }, OnError);
         Debug.Log("Congratulations, you registered!");
@@ -130,6 +137,11 @@ public class PlayFabLogin : MonoBehaviour
         txtUserName.text = 
             "Username: " + result.InfoResultPayload.PlayerProfile.DisplayName + "\n" + 
             "Last Login: " + result.InfoResultPayload.PlayerProfile.LastLogin.ToString();
+
+        playfabID = result.PlayFabId;
+        entityId = result.EntityToken.Entity.Id;
+        // The expected entity type is title_player_account.
+        entityType = result.EntityToken.Entity.Type;
 
         Debug.Log("Congratulations, you made your first successful API call!");
     }
