@@ -79,4 +79,17 @@ public class PlayfabStats : MonoBehaviour
     {
         Debug.Log(error.GenerateErrorReport());
     }
+
+    public void CloudIncrement()
+    {
+        PlayFabClientAPI.ExecuteCloudScript(new ExecuteCloudScriptRequest
+        {
+            FunctionName = "IncrementReadOnlyUserData"
+        },
+        result => Debug.Log("CloudScript call successful"),
+        error => {
+            Debug.Log("CloudScript call failed");
+            Debug.Log(error.GenerateErrorReport());
+        });
+    }
 }

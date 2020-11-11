@@ -164,4 +164,9 @@ public class PlayFabLogin : MonoBehaviour
         PlayerPrefs.SetString("Email", email);
         PlayerPrefs.SetString("Pass", pass);
     }
+
+    public void SendCustomAccountRecoveryEmail()
+    {
+        PlayFabClientAPI.SendAccountRecoveryEmail(new SendAccountRecoveryEmailRequest { TitleId = "9FE3B", Email = email, EmailTemplateId = "877896900231880A" }, success => { Debug.Log("Email was sent!"); }, OnError);
+    }
 }
